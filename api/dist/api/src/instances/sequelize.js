@@ -16,7 +16,7 @@ if (secrets_1.ENVIRONMENT == 'production') {
 else {
     sqdatabase = new sequelize_1.Sequelize({
         dialect: 'postgres',
-        host: secrets_1.DEV_DB_URL,
+        host: secrets_1.DB_HOST,
         port: 5432,
         database: secrets_1.DB,
         username: secrets_1.DB_USER,

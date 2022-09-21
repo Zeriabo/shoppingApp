@@ -24,7 +24,9 @@ const initialState: CartDetailsState = {
 export const fetchCartDetails: any = createAsyncThunk(
   "getCartDetails",
   async (id) => {
-    return await axios.get("http://localhost:5001/api/v1/cartdetails/" + id);
+    return await axios.get(
+      process.env.REACT_APP_SERVER_URL + "/cartdetails/" + id
+    );
   }
 );
 
@@ -33,7 +35,7 @@ export const addProductToCartDetails: any = createAsyncThunk(
   async (data: any) => {
     const cartId = data.cartId;
     const productId = data.id;
-    await fetch("http://localhost:5001/api/v1/cartdetails/" + cartId, {
+    await fetch(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + cartId, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -50,7 +52,8 @@ export const checkOut: any = createAsyncThunk(
     console.log("Paying");
     console.log(id);
     const cartId = id;
-    await fetch("http://localhost:5001/api/v1/carts/" + cartId, {
+
+    await fetch(process.env.REACT_APP_SERVER_URL + "/carts/" + cartId, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -61,25 +64,30 @@ export const checkOut: any = createAsyncThunk(
   }
 );
 export const getCartDetails = (id: any) => {
-  axios.get("http://localhost:5001/api/v1/cartdetails/" + id).then((res) => {
-    //cartid
-    return res.data;
-  });
+  axios
+    .get(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + id)
+    .then((res) => {
+      //cartid
+      return res.data;
+    });
 };
 export const removeProductFromCartDetails: any = createAsyncThunk(
   "getCartDetails",
   async (data: any) => {
     console.log(data);
     const id = data.id; //productId
-    fetch("http://localhost:5001/api/v1/cartdetails/remove/" + data.cartId, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": "true",
-      },
-      body: JSON.stringify({ productId: data.id }),
-    });
+    fetch(
+      process.env.REACT_APP_SERVER_URL + "/cartdetails/remove/" + data.cartId,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": "true",
+        },
+        body: JSON.stringify({ productId: data.id }),
+      }
+    );
   }
 );
 

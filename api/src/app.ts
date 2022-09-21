@@ -42,6 +42,7 @@ app.use(cors(corsOptions))
 
 const port = process.env.PORT || 5001
 const env = process.env
+console.log('port' + env.PORT)
 app.use(
   session({
     secret: 'eminem', // session secret
@@ -75,7 +76,7 @@ app.use('/api/v1/carts', cartRouter)
 app.use('/api/v1/category', categoryRouter)
 app.use('/api/v1/products', productsRouter)
 app.use('/api/v1/users', userRouter)
-app.use('/api/v1/cartdetails', cartDetailRouter)
+app.use('/apiv1/cartdetails', cartDetailRouter)
 // Custom API error handler
 app.use(apiErrorHandler)
 

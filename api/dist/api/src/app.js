@@ -42,6 +42,7 @@ const corsOptions = {
 app.use(cors_1.default(corsOptions));
 const port = process.env.PORT || 5001;
 const env = process.env;
+console.log('port' + env.PORT);
 app.use(express_session_1.default({
     secret: 'eminem',
     name: 'sid',
@@ -67,11 +68,11 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
 });
-app.use('/api/v1/carts', cart_1.default);
-app.use('/api/v1/category', category_1.default);
-app.use('/api/v1/products', product_1.default);
-app.use('/api/v1/users', user_1.default);
-app.use('/api/v1/cartdetails', cartDetail_1.default);
+app.use('/v1/carts', cart_1.default);
+app.use('/v1/category', category_1.default);
+app.use('/v1/products', product_1.default);
+app.use('/v1/users', user_1.default);
+app.use('/v1/cartdetails', cartDetail_1.default);
 // Custom API error handler
 app.use(apiErrorHandler_1.default);
 // Couple the application to the Swagger module.

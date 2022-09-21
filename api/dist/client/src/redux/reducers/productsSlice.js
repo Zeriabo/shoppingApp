@@ -18,8 +18,7 @@ const initialState = {
 };
 var untouch = [];
 exports.fetchProducts = toolkit_1.createAsyncThunk("getProducts", () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("fetching");
-    const response = yield fetch("http://localhost:5001/api/v1/products/", {
+    const response = yield fetch(process.env.REACT_APP_SERVER_URL + "/products/", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -33,7 +32,7 @@ exports.fetchProducts = toolkit_1.createAsyncThunk("getProducts", () => __awaite
     }
 }));
 exports.fetchProduct = toolkit_1.createAsyncThunk("fetchproduct", (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch(`http://localhost:5001/api/v1/products/${id}`);
+    const response = yield fetch(process.env.REACT_APP_SERVER_URL + `/products/${id}`);
     const result = yield response.json();
     return result;
 }));

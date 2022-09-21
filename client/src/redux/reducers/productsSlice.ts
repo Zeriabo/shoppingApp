@@ -24,15 +24,17 @@ const initialState: ProductsState = {
 var untouch: any = [];
 
 export const fetchProducts: any = createAsyncThunk("getProducts", async () => {
-  console.log("fetching");
-  const response = await fetch("http://localhost:5001/api/v1/products/", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Credentials": "true",
-    },
-  });
+  const response = await fetch(
+    process.env.REACT_APP_SERVER_URL + "/products/",
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true",
+      },
+    }
+  );
   if (response.status === 201) {
     const res = await response.json();
     return res.body.result;
@@ -42,7 +44,9 @@ export const fetchProducts: any = createAsyncThunk("getProducts", async () => {
 export const fetchProduct = createAsyncThunk(
   "fetchproduct",
   async (id: string) => {
-    const response = await fetch(`http://localhost:5001/api/v1/products/${id}`);
+    const response = await fetch(
+      process.env.REACT_APP_SERVER_URL + `/products/${id}`
+    );
     const result = await response.json();
     return result;
   }
@@ -56,7 +60,7 @@ export const deleteProductAsync = createAsyncThunk(
       });
       const result = await data.json();
       return result;
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
   }
@@ -78,7 +82,6 @@ export const productsSlice = createSlice({
         state.products.filter((element) => element.price != action.payload);
     },
     loadProducts(state, action) {
-      console.log("Load products");
       action.payload.forEach((element: any) => {
         var productToPush: IProduct = {
           id: 0,
@@ -116,7 +119,6 @@ export const productsSlice = createSlice({
       }
     },
     filterProducts(state, action) {
-      console.log(action);
       if (action.payload != "") {
         return {
           ...state,
@@ -156,7 +158,7 @@ export const productsSlice = createSlice({
       deleteProductAsync.fulfilled,
       (state, action: PayloadAction<number>) => {
         state.products = state.products.filter(
-          (product: { id: number }) => product.id !== action.payload
+          (product: { id: any }) => product.id !== action.payload
         );
       }
     );

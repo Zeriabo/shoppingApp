@@ -15,8 +15,9 @@ const initialState = {
     categories: [],
     status: "idle",
 };
+console.log(process.env.REACT_APP_SERVER_URL);
 exports.fetchCategories = toolkit_1.createAsyncThunk("getCategories", () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch("http://localhost:5001/api/v1/category", {
+    const response = yield fetch(process.env.REACT_APP_SERVER_URL + "/category", {
         method: "GET",
         headers: {
             Accept: "application/json",

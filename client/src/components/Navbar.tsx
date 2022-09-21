@@ -85,15 +85,14 @@ const Navbar = () => {
   const userState=useSelector((state:RootState)=>state.rootReducer.user); 
   const cart=useSelector((state:RootState)=>state.rootReducer.cartDetails); 
   const products=useSelector((state:RootState)=>state.rootReducer.products.products);
-  const history= useSelector((state:RootState)=>state.rootReducer.user.history);
+  let history= useSelector((state:RootState)=>state.rootReducer.user.history);
 
-console.log(history)
   const signin= ()=>{
-    window.open('http://localhost:5001/api/v1/users/auth/account/',"_self")
+    window.open(process.env.REACT_APP_SERVER_URL+'/users/auth/account/',"_self")
   }
    const signout= ()=>{
     dispatch(logout)
-    window.open('http://localhost:5001/api/v1/users/logout',"_self")
+    window.open(process.env.REACT_APP_SERVER_URL+'/users/logout',"_self")
 
   }
 
@@ -125,12 +124,13 @@ console.log(history)
 
        {(userState.user.id!=undefined)?      <MenuItem onClick={()=>  dispatch(getHistory(userState.cart.userId))}>
    <Drawer anchor='right' open={historyOpen}  onClose={() => setHistoryOpen(false)}>
-        <History carts={history} view={function (clickedItem: ICartItem): void {
+  {(history!=null)?  <History carts={history} view={function (clickedItem: ICartItem): void {
               throw new Error("Function not implemented.");
-            } } cartTotal={undefined} paid={undefined} createdAt={undefined} updatedAt={undefined}             />
+            } } cartTotal={undefined} paid={undefined} createdAt={undefined} updatedAt={undefined}             />:null}
+      
        </Drawer>
 
-       <Badge badgeContent={history.length} color="primary" onClick={() => setHistoryOpen(true)}>
+       <Badge badgeContent={(history!=null)?history.length:0} color="primary" onClick={() => setHistoryOpen(true)}>
             <HistoryIcon />
           </Badge>
         </MenuItem> :null }

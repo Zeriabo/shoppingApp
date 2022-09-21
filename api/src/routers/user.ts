@@ -63,17 +63,16 @@ router.get('/login/failed', (req, res) => {
 })
 
 router.get('/logout', (req, res) => {
-  console.log('logout')
   req.logOut()
 
-  res.redirect('http://localhost:3000')
+  res.redirect('http://localhost:8000')
 })
 //check route
 router.get('/login/success', (req: any, res: any, next) => {
   res.cookie('user', req.user, {})
 
   res.status(200).json({
-    sucess: true,
+    success: true,
     message: 'Successul login',
     cookies: req.sessionStore.sessions,
     user: req.user,
@@ -82,14 +81,13 @@ router.get('/login/success', (req: any, res: any, next) => {
 
 // Sign JSON Web Token, expires in 60 minutes
 const signToken = (res: any, user: any) => {
-  console.log('signToken')
   const payload = {
     id: user.id,
     name: user.name,
     email: user.email,
     role: user.status.role,
   }
-  console.log(payload)
+
   return payload
   // jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
   //   res.json({
@@ -113,7 +111,7 @@ const signToken = (res: any, user: any) => {
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:3000/',
+    successRedirect: 'http://localhost:8000/',
     failureRedirect: '/login/failed',
   }),
   (req, res) => {

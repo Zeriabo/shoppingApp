@@ -13,7 +13,6 @@ import axios from "axios";
 import { useAppDispatch } from "../app/hooks";
 import { fetchCartDetails } from "./cartDetailsSlice";
 
-const dispatch = useAppDispatch;
 export interface UsersState {
   user: IUser;
   loading: "idle" | "pending" | "succeeded" | "failed";
@@ -40,7 +39,7 @@ export const fetchUser: any = createAsyncThunk("users/getUser", async () => {
     image: undefined,
   };
   const response = await fetch(
-    "http://localhost:5001/api/v1/users/login/success",
+    process.env.REACT_APP_SERVER_URL + "/users/login/success",
     {
       method: "GET",
       headers: {
@@ -50,6 +49,7 @@ export const fetchUser: any = createAsyncThunk("users/getUser", async () => {
       },
     }
   );
+
   if (response.status === 200) {
     const res = await response.json();
 
@@ -70,10 +70,9 @@ export const getHistory: any = createAsyncThunk(
   "users/getHistory",
   async (userId: any) => {
     const response: any = await fetch(
-      "http://localhost:5001/api/v1/carts/paid/" + userId
+      process.env.REACT_APP_SERVER_URL + "/carts/paid/" + userId
     );
     const res = await response.json();
-    console.log(res);
     return res;
   }
 );
@@ -85,7 +84,7 @@ export const checkUserCart: any = createAsyncThunk(
     var userId = null;
     var cart: any = null;
     const gettingUserID = axios
-      .get("http://localhost:5001/api/v1/users/get/" + user.email)
+      .get(process.env.REACT_APP_SERVER_URL + "/users/get/" + user.email)
       .then((response) => {
         if (response.data.body.result[0].email == user.email) {
           var userId = response.data.body.result[0].id;
@@ -93,7 +92,7 @@ export const checkUserCart: any = createAsyncThunk(
           return userId;
         } else {
           //user is not in user table and doesn't have a cart
-          axios.post("http://localhost:5001/api/v1/users/", {
+          axios.post(process.env.REACT_APP_SERVER_URL + "/users/", {
             body: user,
           });
         }
@@ -104,25 +103,25 @@ export const checkUserCart: any = createAsyncThunk(
 
     if (userId > 0) {
       const cartApi = await axios.get(
-        "http://localhost:5001/api/v1/carts/user/" + userId
+        process.env.REACT_APP_SERVER_URL + "/carts/user/" + userId
       );
       if (cartApi.data[0] != undefined) {
         return cartApi.data[0];
       } else {
         axios
-          .post("http://localhost:5001/api/v1/users/", {
+          .post(process.env.REACT_APP_SERVER_URL + "/users/", {
             user,
           })
           .then((res) => res)
           .catch((err) => console.log(err));
         axios
-          .post("http://localhost:5001/api/v1/carts/", {
+          .post(process.env.REACT_APP_SERVER_URL + "/carts/", {
             userId: user.id,
           })
           .then((res) => res)
           .catch((err) => console.log(err));
         const cartApi = await axios.get(
-          "http://localhost:5001/api/v1/carts/user/",
+          process.env.REACT_APP_SERVER_URL + "/carts/user/",
           { params: { userId: userId } }
         );
         return cartApi.data[0];
@@ -191,7 +190,6 @@ export const userSlice = createSlice({
       builder.addCase(
         getHistory.fulfilled,
         (state, action: PayloadAction<any>) => {
-          console.log(action);
           state.history = action.payload;
         }
       ),

@@ -21,7 +21,7 @@ if (ENVIRONMENT == 'production') {
 } else {
   sqdatabase = new Sequelize({
     dialect: 'postgres',
-    host: DEV_DB_URL,
+    host: DB_HOST,
     port: 5432,
     database: DB,
     username: DB_USER,

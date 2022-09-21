@@ -17,18 +17,20 @@ const initialState: CategoriesState = {
   categories: [],
   status: "idle",
 };
-
 export const fetchCategories: any = createAsyncThunk(
   "getCategories",
   async () => {
-    const response = await fetch("http://localhost:5001/api/v1/category", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": "true",
-      },
-    });
+    const response = await fetch(
+      process.env.REACT_APP_SERVER_URL + "/category",
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": "true",
+        },
+      }
+    );
     if (response.status === 201) {
       const res = await response.json();
       return res.body.result;

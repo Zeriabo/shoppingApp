@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { categories } from "./data";
 import { mobile } from "../responsive";
 import CategoryItem from "./CategoryItem";
-import { useDispatch } from "react-redux";
-import { fetchCategories } from "../redux/reducers/categoriesSlice";
+
 
 const Container = styled.div`
   display: flex;
@@ -14,6 +12,7 @@ const Container = styled.div`
 `;
 
 const Categories = (categories:any) => {
+  console.log(categories)
   return (
     <Container>
       {categories.categories.categories.map((item:any) => (
