@@ -15,9 +15,6 @@ export const addProductToCart = async (
   next: NextFunction
 ) => {
   try {
-    console.log('adding')
-    console.log(req.body)
-    console.log(Number(req.params.cartId))
     const data = req.body
     const cartId = Number(req.params.cartId)
     const productId = Number(data.productId)
