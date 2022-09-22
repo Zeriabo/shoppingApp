@@ -4,6 +4,12 @@ Shopping demonstrates viewing various products and choosing the desired product 
 
 ## Prerequisites
 
-1.Install Docker 2. run in the root of the project docker-compose up --build 3. backend runs on port 5001 and frontend on port 8000
+<div align="center">
+1.Install Docker
+
+<br />
+
+2. run in the root of the project docker-compose up --build 3. backend runs on port 5001 and frontend on port 8000
+</div>
 
 ## Senario
