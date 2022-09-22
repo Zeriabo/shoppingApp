@@ -1,0 +1,10 @@
+build:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: "./api"
+
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
