@@ -76,7 +76,7 @@ app.use('/api/v1/carts', cartRouter)
 app.use('/api/v1/category', categoryRouter)
 app.use('/api/v1/products', productsRouter)
 app.use('/api/v1/users', userRouter)
-app.use('/apiv1/cartdetails', cartDetailRouter)
+app.use('/api/v1/cartdetails', cartDetailRouter)
 // Custom API error handler
 app.use(apiErrorHandler)
 
