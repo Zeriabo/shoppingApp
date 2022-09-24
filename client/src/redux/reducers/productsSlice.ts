@@ -107,8 +107,10 @@ export const productsSlice = createSlice({
       if (action.payload != "") {
         return {
           ...state,
-          filteredProducts: state.products.filter((foundProduct: any) =>
-            foundProduct.description.includes(action.payload)
+          filteredProducts: state.products.filter(
+            (foundProduct: any) =>
+              foundProduct.description.includes(action.payload) ||
+              foundProduct.title.includes(action.payload)
           ),
         };
       } else {

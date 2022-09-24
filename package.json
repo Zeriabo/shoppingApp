@@ -1,0 +1,13 @@
+{
+    "name": "full-stack-app",
+    "description": "a really cool app",
+    "version": "1.0.0",
+    "engines": {
+      "node": "14.15.x"
+    },
+    "scripts": {
+        "client-install"  : "cd client && npm install",
+        "server-install"  : "cd api && npm install"
+        
+    }
+}
