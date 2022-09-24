@@ -13,7 +13,6 @@ export const createUser = async (
 ) => {
   try {
     const create = req.body
-    console.log(create)
     const createdUser: any = await UserService.createUser(create)
     if (createdUser) {
       if (createdUser.rowCount > 0) {

@@ -48,7 +48,7 @@ export const addProductToCart = async (
           next(err)
         })
     } else {
-      await CartDetailService.addProductToCart(
+      return await CartDetailService.addProductToCart(
         cartId,
         productId,
         quantity,
@@ -59,6 +59,7 @@ export const addProductToCart = async (
           return res
         })
         .catch((err) => {
+          console.log(err)
           next(err)
         })
     }

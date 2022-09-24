@@ -81,7 +81,6 @@ const Product = ( item :any) => {
 const userCart=user.cart
 
   function addItemToCart(item: any): void {
-    console.log(item)
     var itemToAdd:IProductToAdd={
       id: undefined,
       title: undefined,
@@ -117,8 +116,8 @@ const userCart=user.cart
   return (
     <Container>
       <Circle />
-      <Image src={item.item.image} />
-      <Info>
+      <Image src={item.item.image}/>
+     <Info>
         {(user.cart!=undefined)?<Icon onClick={()=>addItemToCart(item.item)} >
          <ShoppingCartOutlined />
         </Icon >:null}

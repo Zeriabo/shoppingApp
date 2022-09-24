@@ -13,12 +13,10 @@ import { checkUserCart, fetchUser, getHistory} from './redux/reducers/userSlice'
 
 function App() {
   const dispatch= useDispatch()
-  const state = useSelector(
-    (state: RootState) => state.rootReducer
-  );  
+
 
   useEffect(() => {
-    console.log("dispatching")
+
      dispatch(fetchUser()).then((res:any)=>{
      dispatch(checkUserCart(res.payload))
      dispatch(fetchProducts()) 
@@ -27,14 +25,18 @@ function App() {
     })
   }, []
   )
+  const state = useSelector(
+    (state: RootState) => state.rootReducer
+  );  
   return (
  
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home state={state} />}>
+        {(state.categories.categories!=undefined)?   <Route path="/" element={<Home state={state} />}></Route>:<Route path="/" element={<NoPage />}></Route>}
+
        
           <Route path="*" element={<NoPage />} />
-        </Route>
+
       </Routes>
     </BrowserRouter>
   );

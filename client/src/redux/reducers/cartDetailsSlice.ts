@@ -49,8 +49,6 @@ export const addProductToCartDetails: any = createAsyncThunk(
 export const checkOut: any = createAsyncThunk(
   "checkOutCart",
   async (id: any) => {
-    console.log("Paying");
-    console.log(id);
     const cartId = id;
 
     await fetch(process.env.REACT_APP_SERVER_URL + "/carts/" + cartId, {

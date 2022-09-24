@@ -47,7 +47,7 @@ const CategoryItem = (item:any) => {
   }
   return (
     <Container>
-      <Image src={"http://localhost:5001/"+item.item.image} />
+      <Image src={item.item.image} />
       <Info>
         <Title>{item.item.name}</Title>
         <Link to="products" spy={true} smooth={true}>   <Button variant="contained" color="success" onClick={()=>shopNow(item.item)}>SHOP NOW </Button></Link>

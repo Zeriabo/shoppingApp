@@ -20,6 +20,7 @@ const initialState: CategoriesState = {
 export const fetchCategories: any = createAsyncThunk(
   "getCategories",
   async () => {
+    console.log(process.env.REACT_APP_SERVER_URL);
     const response = await fetch(
       process.env.REACT_APP_SERVER_URL + "/category",
       {
@@ -56,6 +57,7 @@ export const categoriesSlice = createSlice({
     });
     builder.addCase(fetchCategories.fulfilled, (state, action) => {
       state.status = "fullfilled";
+      console.log(action.payload);
       state.categories = action.payload;
 
       return state;

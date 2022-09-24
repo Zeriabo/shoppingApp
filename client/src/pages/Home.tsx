@@ -10,13 +10,15 @@ import { ProductState } from "../redux/reducers/productSlice";
 
 
 const Home = (fullState:any) => {
+  console.log(fullState)
   return (
     <div>
       <Announcement />
       <Navbar />
       <br />
       <Slider />
-      <Categories categories={fullState.state.categories} />
+      {(fullState.state.categories!=undefined)?   <Categories categories={fullState.state.categories} />:null}
+   
       <div id="products">
       <Products products={(fullState.state.products.filteredProducts.length>0)?fullState.state.products.filteredProducts:fullState.state.products.products}/>
       </div>

@@ -62,12 +62,36 @@ router.get('/login/failed', (req, res) => {
   })
 })
 
+/**
+ * @openapi
+ * /logout:
+ *  get:
+ *    summary: logout and clear the cookies
+ *     tags:
+ *     - User
+ *     description: Responds if the app is up and running
+ *     responses:
+ *       401:
+ *         description: App is up and running
+ */
 router.get('/logout', (req, res) => {
   req.logOut()
 
-  res.redirect('http://localhost:8000')
+  res.redirect('http://localhost:3050')
 })
-//check route
+
+/**
+ * @openapi
+ * /login/success:
+ *  get:
+ *    summary: login sucess return the user
+ *     tags:
+ *     - User
+ *     description: Responds if the app is up and running
+ *     responses:
+ *       401:
+ *         description: App is up and running
+ */
 router.get('/login/success', (req: any, res: any, next) => {
   res.cookie('user', req.user, {})
 
@@ -111,7 +135,7 @@ const signToken = (res: any, user: any) => {
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:8000/',
+    successRedirect: 'http://localhost:3050/',
     failureRedirect: '/login/failed',
   }),
   (req, res) => {

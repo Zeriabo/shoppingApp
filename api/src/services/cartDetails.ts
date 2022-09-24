@@ -24,7 +24,7 @@ const insertProductToCart = async (
         if (results.rowCount > 0) {
           const tablename = 'public."cartDetails"'
           const response = await client.query(
-            "SELECT CURRVAL(pg_get_serial_sequence($1,'id'))",
+            'SELECT CURRVAL(pg_get_serial_sequence($1,\'id\'))',
             [tablename]
           )
 
@@ -61,6 +61,7 @@ const addProductToCart = async (
   discount: number
 ) => {
   //SET quantity=$1
+  console.log('Adding ' + productId + ' ' + cartId)
   client
     .query(
       'SELECT * FROM public."cartDetails" where "cartId"=$1 And "productId"=$2',
@@ -74,6 +75,7 @@ const addProductToCart = async (
             [cartId, productId, quantity, price, discount]
           )
           .then((res: any) => (res.rowCount > 0 ? true : false))
+          .catch((err: Error) => logger.error(err))
       } else {
         client.query(
           'INSERT  INTO  public."cartDetails"("cartId","productId",quantity,price,discount) VALUES($1,$2,$3,$4,$5)',
@@ -87,20 +89,8 @@ const addProductToCart = async (
         )
       }
     })
-    .catch((err: Error) => logger.error(err))
 
-  // client.query(
-  //   'INSERT  INTO  public."cartDetails"("cartId","productId",quantity,price,discount) VALUES($1,$2,$3,$4,$5)',
-  //   [cartId,cartDetailsId, productId, quantity],
-  //   (error: any, results: any) => {
-  //     if (error) {
-  //       //record error in the error file
-  //       logger.error(error.detail)
-  //       throw error
-  //     }
-  //     return results
-  //   }
-  // )
+    .catch((err: Error) => logger.error(err))
 }
 const removeProductFromCart = (productId: number, cartId: number) => {
   client.query(

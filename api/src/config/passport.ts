@@ -8,13 +8,52 @@ require('dotenv').config()
 
 const GOOGLE_CLIENT_ID = process.env.CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.CLIENT_SECRET
+function getDate(): any {
+  const dateTime = new Date()
 
+  // get current date
+  // adjust 0 before single digit date
+  const date = ('0' + dateTime.getDate()).slice(-2)
+
+  // get current month
+  const month = ('0' + (dateTime.getMonth() + 1)).slice(-2)
+
+  // get current year
+  const year = dateTime.getFullYear()
+
+  // get current hours
+  const hours = dateTime.getHours()
+
+  // get current minutes
+  const minutes = dateTime.getMinutes()
+
+  // get current seconds
+  const seconds = dateTime.getSeconds()
+
+  // prints date in YYYY-MM-DD format
+  console.log(year + '-' + month + '-' + date)
+
+  // prints date & time in YYYY-MM-DD HH:MM:SS format
+  return (
+    year +
+    '-' +
+    month +
+    '-' +
+    date +
+    ' ' +
+    hours +
+    ':' +
+    minutes +
+    ':' +
+    seconds
+  )
+}
 export const myPassport = passport.use(
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:5001/api/v1/users/auth/google/callback',
+      callbackURL: 'http://localhost:3050/api/v1/users/auth/google/callback',
     },
     function (
       request: any,
@@ -81,7 +120,7 @@ export const myPassport = passport.use(
                 if (res.rowCount == 0) {
                   //user does not exists
                   console.log(user)
-                  let [firstname, lastname] = user.name.split(' ')
+                  const [firstname, lastname] = user.name.split(' ')
                   console.log(firstname)
                   console.log(lastname)
                   client.query(
@@ -117,43 +156,3 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user: any, done) => {
   done(null, user)
 })
-function getDate(): any {
-  let date_time = new Date()
-
-  // get current date
-  // adjust 0 before single digit date
-  let date = ('0' + date_time.getDate()).slice(-2)
-
-  // get current month
-  let month = ('0' + (date_time.getMonth() + 1)).slice(-2)
-
-  // get current year
-  let year = date_time.getFullYear()
-
-  // get current hours
-  let hours = date_time.getHours()
-
-  // get current minutes
-  let minutes = date_time.getMinutes()
-
-  // get current seconds
-  let seconds = date_time.getSeconds()
-
-  // prints date in YYYY-MM-DD format
-  console.log(year + '-' + month + '-' + date)
-
-  // prints date & time in YYYY-MM-DD HH:MM:SS format
-  return (
-    year +
-    '-' +
-    month +
-    '-' +
-    date +
-    ' ' +
-    hours +
-    ':' +
-    minutes +
-    ':' +
-    seconds
-  )
-}

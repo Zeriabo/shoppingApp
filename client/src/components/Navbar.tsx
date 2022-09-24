@@ -1,7 +1,7 @@
 import { Badge, Drawer } from "@material-ui/core";
 import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { config } from "dotenv";
 import { useSelector,useDispatch } from 'react-redux';
 import styled from "styled-components";
@@ -12,8 +12,13 @@ import { ICartItem ,IProductToAdd} from "../types/types";
 import Cart from "./Cart/Cart";
 import History from "./History/History"
 import { Avatar } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import { TextField } from '@mui/material';
 import { addProduct, addProductToCartDetails, checkOut, empty, removeProduct, removeProductFromCartDetails } from "../redux/reducers/cartDetailsSlice";
 import HistoryIcon from '@mui/icons-material/History';
+import { searchProduct } from "../redux/reducers/productsSlice";
+import {Link} from 'react-scroll'
+
 
 const Container = styled.div`
   height: 60px;
@@ -77,6 +82,9 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
+const inputProps = {
+  step: 300,
+};
 const Navbar = () => {
   const dispatch = useDispatch();
   const [cartOpen, setCartOpen] = useState(false);
@@ -88,15 +96,18 @@ const Navbar = () => {
   let history= useSelector((state:RootState)=>state.rootReducer.user.history);
 
   const signin= ()=>{
+    console.log(process.env.REACT_APP_SERVER_URL)
     window.open(process.env.REACT_APP_SERVER_URL+'/users/auth/account/',"_self")
   }
    const signout= ()=>{
     dispatch(logout)
     window.open(process.env.REACT_APP_SERVER_URL+'/users/logout',"_self")
 
-  }
+  } 
 
-
+const search=(text:any)=>{
+ dispatch(searchProduct(text))
+}
   
   return (
     <Container>
@@ -104,8 +115,8 @@ const Navbar = () => {
       <Left>
         <Language>EN</Language>
         <SearchContainer>
-          <Input placeholder="Search" />
-          <Search style={{ color: "gray", fontSize: 16 }} />
+         <TextField id="search" type="text"  />
+         <Link to="products" spy={true} smooth={true}>      <SearchIcon onClick={()=>search(document.getElementById("search").value)} sx={{ "&:hover": { cursor: "pointer" } }}/></Link>
         </SearchContainer>
       </Left>
       <Center>
@@ -181,9 +192,11 @@ const Navbar = () => {
           </Badge>
         </MenuItem> :null }
    
-     
+   
     </Wrapper>
+ 
   </Container>
+  
   );
 };
 export default Navbar;
