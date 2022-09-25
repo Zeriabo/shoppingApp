@@ -115,7 +115,7 @@ export const myPassport = passport.use(
               if (res) {
                 //  console.log(res)
                 if (res.rowCount > 0) {
-                  //user exists
+                  //user existsgi
                 }
                 if (res.rowCount == 0) {
                   //user does not exists
