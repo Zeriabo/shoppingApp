@@ -79,7 +79,7 @@ const Product = ( item :any) => {
   const user = useSelector( (state: RootState) => state.rootReducer.user);
 
 const userCart=user.cart
-
+console.log(user)
   function addItemToCart(item: any): void {
     var itemToAdd:IProductToAdd={
       id: undefined,

@@ -6,14 +6,14 @@ const axios = require('axios').default
 
 const getProducts = async () => {
   const response = await client.query(
-    'SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."product"  ORDER BY id ASC'
+    'SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."products"  ORDER BY id ASC'
   )
   return response.rows
 }
 
 const getProductsByCategory = async (category: number) => {
   const response = await client.query(
-    'SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."product" where category=$1',
+    'SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."products" where category=$1',
     [category]
   )
   return response.rows
@@ -21,15 +21,15 @@ const getProductsByCategory = async (category: number) => {
 
 const getSingleProduct = async (id: number) => {
   const response = await client.query(
-    'SELECT * FROM public."product" where id= $1',
+    'SELECT * FROM public."products" where id= $1',
     [id]
   )
   return response.rows
 }
 const fillProducts = async () => {
-  const response = await client.query('SELECT * FROM public."product"')
+  const response = await client.query('SELECT * FROM public."products"')
   let discount = 0.0
-  var newlyCreatedCategoryId = null
+  let newlyCreatedCategoryId = null
   const res = await response
   if (res.rowCount == 0) {
     try {
@@ -42,7 +42,6 @@ const fillProducts = async () => {
             } else {
               discount = 5
             }
-            console.log(product.category)
             await client
               .query('SELECT * FROM category WHERE name=$1', [product.category])
               .then(async (qres) => {
@@ -58,18 +57,15 @@ const fillProducts = async () => {
                         const lastinsertedID = await client.query(
                           'SELECT LAST_INSERT_ID()'
                         )
-                        console.log(lastinsertedID)
 
-                        console.log(result)
-                        console.log(result.rows[0].id)
                         newlyCreatedCategoryId = result.rows[0].id
                         const productExists = await client.query(
-                          'SELECT * FROM product WHERE name=$1',
+                          'SELECT * FROM products WHERE name=$1',
                           [product.name]
                         )
                         if ((productExists.rowCount = 0)) {
                           await client.query(
-                            'INSERT INTO  public."product"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)',
+                            'INSERT INTO  public."products"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)',
                             [
                               product.title,
                               product.price,
@@ -95,7 +91,7 @@ const fillProducts = async () => {
                 } else {
                   newlyCreatedCategoryId = qres.rows[0].id
                   await client.query(
-                    'INSERT INTO  public."product"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)',
+                    'INSERT INTO  public."products"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)',
                     [
                       product.title,
                       product.price,
@@ -129,7 +125,7 @@ const fillProducts = async () => {
 }
 const createProduct = (newProduct: any) => {
   client.query(
-    'INSERT INTO  public."product"(title,price,discount,quantity) VALUES($1,$2,$3,$4)',
+    'INSERT INTO  public."products"(title,price,discount,quantity) VALUES($1,$2,$3,$4)',
     [
       newProduct.title,
       newProduct.price,
@@ -147,14 +143,14 @@ const createProduct = (newProduct: any) => {
 }
 const deleteProduct = async (id: number) => {
   const response = await client.query(
-    'DELETE FROM public."product" where id= $1',
+    'DELETE FROM public."products" where id= $1',
     [id]
   )
   return response.rowCount > 0
 }
 const updateProduct = async (id: number, update: any) => {
   const toUpdate = await client.query(
-    'SELECT * FROM public."product" where id= $1',
+    'SELECT * FROM public."products" where id= $1',
     [id]
   )
   let updated = false
