@@ -12,7 +12,6 @@ const Container = styled.div`
 `;
 
 const Categories = (categories:any) => {
-  console.log(categories)
   return (
     <Container>
       {categories.categories.categories.map((item:any) => (

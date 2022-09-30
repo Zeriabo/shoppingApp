@@ -13,8 +13,11 @@ const Container = styled.div`
 `;
 
 const Products = (products:any) => {
+
   return (
+
     <Container>
+     
       {products.products.map((item:any) => (
         <Product item={item} key={item.id} />
       ))}

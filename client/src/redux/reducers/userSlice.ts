@@ -27,8 +27,8 @@ const initialState: UsersState = {
     image: undefined,
   },
   loading: "idle",
-  cart: null,
-  history: null,
+  cart: {},
+  history: {},
 };
 
 export const fetchUser: any = createAsyncThunk("users/getUser", async () => {
@@ -83,18 +83,22 @@ export const checkUserCart: any = createAsyncThunk(
   async (user: IUser) => {
     var userId = null;
     var cart: any = null;
+    console.log(user);
     const gettingUserID = axios
       .get(process.env.REACT_APP_SERVER_URL + "/users/get/" + user.email)
-      .then((response) => {
+      .then((response: any) => {
+        console.log(response);
         if (response.data.body.result[0].email == user.email) {
           var userId = response.data.body.result[0].id;
 
           return userId;
         } else {
           //user is not in user table and doesn't have a cart
-          axios.post(process.env.REACT_APP_SERVER_URL + "/users/", {
-            body: user,
-          });
+          axios
+            .post(process.env.REACT_APP_SERVER_URL + "/users/", {
+              body: user,
+            })
+            .then((res: any) => console.log(res));
         }
       })
       .catch((err) => console.log(err));

@@ -12,8 +12,38 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.rightZoomed{
+  width: 50%;
+  float: right;
+  border: 2px solid #003B62;
+  font-family: verdana;
+  background-color: #B5CFE0;
+  padding-left: 10px;
+  float: right;
 
-
+}
+.leftZoomed{
+  position:relative;
+  width: 20%; 
+  float:left;
+  padding-left:5.25rem;
+}
+.zoomedpic{
+  cursor: pointer; 
+  
+}
+.zoomedprice{
+  color: #685206; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 24px; margin: 0 0 24px; text-align: justify; text-justify: inter-word;
+}
+.zoomedtitle{
+ color: #7c795d; font-family: 'Trocchi', serif; font-size: 45px; font-weight: normal; line-height: 48px; margin: 0;
+}
+.zoomeddescription{
+  color: #685206; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 24px; margin: 0 0 24px; text-align: justify; text-justify: inter-word;
+}
+.zoomeddiscount{
+  color: #685206; font-family: 'Helvetica Neue', sans-serif; font-size: 14px; line-height: 24px; margin: 0 0 24px; text-align: justify; text-justify: inter-word;
+}
 .blue-color {
   color:blue;
 

@@ -28,7 +28,7 @@ const getSingleCart = async (id: number) => {
         return results.rows
       }
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       return err
     })
 }
@@ -44,14 +44,14 @@ const getSingleCartByUserId = async (id: number) => {
         return results.rows
       }
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       return err
     })
 }
 
 const getUserCart = async (email: string) => {
   return await client
-    .query('SELECT id FROM public."user" where email= $1', [email])
+    .query('SELECT id FROM public."users" where email= $1', [email])
     .then((result: any) => {
       if (result.rows == 0) {
         return 'no user with this email'
@@ -59,7 +59,7 @@ const getUserCart = async (email: string) => {
         return getSingleCartByUserId(result.rows[0].id)
       }
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       return err
     })
 }
@@ -82,7 +82,7 @@ const createCart = async (cart: any) => {
             'INSERT INTO  public."cart" (  paid, "userId") VALUES($1,$2)',
             [paid, userId]
           )
-          .then((results) => {
+          .then((results: any) => {
             return results
           })
       } else {
@@ -90,7 +90,7 @@ const createCart = async (cart: any) => {
         return err
       }
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       return err
     })
 }
@@ -108,7 +108,7 @@ function deleteCart(id: number) {
       if (results.rowCount > 0) {
         client
           .query('DELETE FROM public."cart" where id= $1', [id])
-          .then((result) => {
+          .then((result: any) => {
             return result
           })
       } else {
@@ -139,14 +139,14 @@ const updateCart = async (id: number, update: any) => {
         }
         client
           .query('UPDATE  public."cart" SET paid=$1 where id= $2', [paid, id])
-          .then((res) => {
+          .then((res: any) => {
             return res.rowCount
           })
       } else {
         return err
       }
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       return err
     })
 }
@@ -158,17 +158,17 @@ const payCart = async (id: number) => {
     .query('SELECT * FROM public."cart" where id= $1', [id])
     .then((selectRes: any) => {
       if (selectRes.rows.length > 0) {
-        let paid = true
+        const paid = true
         client
           .query('UPDATE  public."cart" SET paid=$1 where id= $2', [paid, id])
-          .then((res) => {
+          .then((res: any) => {
             return res.rowCount
           })
       } else {
         return err
       }
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       return err
     })
 }

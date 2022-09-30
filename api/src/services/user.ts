@@ -2,21 +2,21 @@ import { client } from '../server'
 
 const getUsers = async () => {
   const response = await client.query(
-    'SELECT * FROM public."user" ORDER BY id ASC'
+    'SELECT * FROM public."users" ORDER BY id ASC'
   )
   return response.rows
 }
 
 const getSingleUser = async (id: number) => {
   const response = await client.query(
-    'SELECT * FROM public."user" where id= $1',
+    'SELECT * FROM public."users" where id= $1',
     [id]
   )
   return response.rows
 }
 const getUserByEmail = async (email: string) => {
   const response = await client.query(
-    'SELECT * FROM public."user" where  email=$1',
+    'SELECT * FROM public."users" where  email=$1',
     [email]
   )
 
@@ -26,7 +26,7 @@ const createUser = async (newUser: any) => {
   const [firstname, lastname] = newUser.user.name.split(' ')
 
   client.query(
-    'INSERT INTO  public."user"("firstname","lastname","email","passwordhash",admin) VALUES($1,$2,$3,$4,$5)',
+    'INSERT INTO  public."users"("firstname","lastname","email","passwordhash",admin) VALUES($1,$2,$3,$4,$5)',
     [firstname, lastname, newUser.user.email, null, newUser.user.admin ? 1 : 0],
     (err: Error, result: any) => {
       if (err) {
@@ -40,14 +40,14 @@ const createUser = async (newUser: any) => {
 }
 const deleteUser = async (id: number) => {
   const response = await client.query(
-    'DELETE FROM public."user" where id= $1',
+    'DELETE FROM public."users" where id= $1',
     [id]
   )
   return response.rowCount > 0
 }
 const updateUser = async (id: number, update: any) => {
   const toUpdate = await client.query(
-    'SELECT * FROM public."user" where id= $1',
+    'SELECT * FROM public."users" where id= $1',
     [id]
   )
 
@@ -78,7 +78,7 @@ const updateUser = async (id: number, update: any) => {
       admin = toUpdate.rows[0].admin
     }
     client.query(
-      'UPDATE  public."user" SET "firstname"=$1,"lastname"=$2,"mobile"=$3,"email"=$4,"passwordhash"=$5,"admin"=$6 where id= $7',
+      'UPDATE  public."users" SET "firstname"=$1,"lastname"=$2,"mobile"=$3,"email"=$4,"passwordhash"=$5,"admin"=$6 where id= $7',
       [firstName, lastName, mobile, email, password, admin, id],
       (err: Error, result: any) => {
         if (err) {

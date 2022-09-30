@@ -68,6 +68,8 @@ export const myPassport = passport.use(
         email: profile.email,
         avatar: profile.picture,
       }
+      console.log(profile)
+      console.log(user)
       if (profile.verified) {
         client.query(
           'SELECT * FROM federated_credentials WHERE email = $1 ',
@@ -105,7 +107,7 @@ export const myPassport = passport.use(
         if (user.id != null) {
           //here to check the user table
           client.query(
-            'Select * FROM  public."user" where email=$1',
+            'Select * FROM  public."users" where email=$1',
             [user.email],
 
             function (err: Error, res: any) {
@@ -124,7 +126,7 @@ export const myPassport = passport.use(
                   console.log(firstname)
                   console.log(lastname)
                   client.query(
-                    'INSERT INTO  public."user"(firstname,lastname,email,admin,lastlogin,passwordhash) VALUES($1,$2,$3,$4,$5,$6) ',
+                    'INSERT INTO  public."users"(firstname,lastname,email,admin,lastlogin,passwordhash) VALUES($1,$2,$3,$4,$5,$6) ',
                     [firstname, lastname, user.email, 0, getDate(), null],
                     function (err: Error, res: any) {
                       console.log(err)

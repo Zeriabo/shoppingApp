@@ -35,7 +35,7 @@ const getSingleCategory = async (id: number) => {
         return results.rows
       }
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       return err
     })
 }

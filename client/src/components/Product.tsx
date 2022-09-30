@@ -1,9 +1,10 @@
-import React from "react";
+import React ,{useState} from "react";
 import {
   FavoriteBorderOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, addProductToCartDetails } from "../redux/reducers/cartDetailsSlice";
@@ -11,6 +12,8 @@ import { useSelect } from "@mui/base";
 import { RootState } from "../redux/app/store";
 import { ICartItem, IProductToAdd } from "../types/types";
 import { nextTick } from "process";
+import { setZoomedImage } from "../redux/reducers/ZoomedImageSlice";
+import { likeUnlikeProduct } from "../redux/reducers/productsSlice";
 
 const Info = styled.div`
   opacity: 0;
@@ -73,13 +76,22 @@ const Icon = styled.div`
   }
 `;
 
+
 const Product = ( item :any) => {
 
   const dispatch=useDispatch();
   const user = useSelector( (state: RootState) => state.rootReducer.user);
+  const likedProducts = useSelector( (state: RootState) => state.rootReducer.products.likedProducts);
+ 
+  const checkIfLiked=(item:any)=>{
 
+
+    const prod :any= likedProducts.find((foundproduct:any) => (item.id === foundproduct.id));
+    return prod;
+  
+     
+    }
 const userCart=user.cart
-console.log(user)
   function addItemToCart(item: any): void {
     var itemToAdd:IProductToAdd={
       id: undefined,
@@ -113,24 +125,41 @@ console.log(user)
   }
 
   }
+  function zoom(obj:any):void{
+   dispatch(setZoomedImage(obj))
+  }
+  function like(item:any):void{
+    dispatch(likeUnlikeProduct(item))
+ 
+   }
+
   return (
     <Container>
       <Circle />
       <Image src={item.item.image}/>
+     
+ 
      <Info>
         {(user.cart!=undefined)?<Icon onClick={()=>addItemToCart(item.item)} >
          <ShoppingCartOutlined />
         </Icon >:null}
         
 
-        <Icon onClick={()=>alert("zooom")}>
+        <Icon onClick={()=>zoom(item.item)}>
           <SearchOutlined  />
         </Icon>
-        <Icon onClick={()=>alert("like")}>
-          <FavoriteBorderOutlined />
+     
+        <Icon onClick={()=>like(item.item)}>
+    {
+      ( checkIfLiked(item.item)!=undefined)?<FavoriteOutlinedIcon />   :<FavoriteBorderOutlined />
+    }
+       
+          
         </Icon>
       </Info>
+      
     </Container>
+    
   );
 };
 

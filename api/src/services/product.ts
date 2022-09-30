@@ -44,12 +44,12 @@ const fillProducts = async () => {
             }
             await client
               .query('SELECT * FROM category WHERE name=$1', [product.category])
-              .then(async (qres) => {
+              .then(async (qres: any) => {
                 if (qres.rowCount == 0) {
                   await client.query(
                     'INSERT INTO category(name) VALUES($1)',
                     [product.category],
-                    async function (err, result) {
+                    async function (err: Error, result: any) {
                       if (err) {
                         //handle error
                         console.log(err)
