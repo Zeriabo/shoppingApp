@@ -18,7 +18,6 @@ import InnerText from "../components/InnerText";
 const Home = (fullState:any) => {
  const dispatch=useDispatch()
     const zoomedImage= useSelector((state:RootState)=>state.rootReducer.zoomedImage)
-  console.log(zoomedImage)
 
   return (
     <div>

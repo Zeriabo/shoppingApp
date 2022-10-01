@@ -32,11 +32,7 @@ const History: React.FC<Props> = ({ carts, view }) => {
       <td>{item.cartid}</td>
       <td>{(item.title)}</td>
       <td>{(item.price)}</td>
-      <td>{new Date(item.created_at).toLocaleDateString([], {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  })}</td>
+      <td>{(item.created)}</td>
       </tr>
     ]
   }

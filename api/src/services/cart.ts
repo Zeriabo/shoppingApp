@@ -12,7 +12,7 @@ const getCarts = async () => {
 
 const getPaidCarts = async (userId: number) => {
   const response = await client.query(
-    'SELECT "cart".id as cartId,"product"."title","cartDetails"."price","cartDetails"."created_at" FROM public."cart",public."cartDetails",public."product" WHERE "userId"=$1  AND "cart".id="cartId" AND "paid"=true And "cartDetails"."productId"="product".id order by "cartId"',
+    'SELECT "cart".id as cartId,"products"."title","cartDetails"."price",CAST("cartDetails"."created" AS VARCHAR) FROM public."cart",public."cartDetails",public."products" WHERE "userId"=$1  AND "cart".id="cartId" AND "paid"=true And "cartDetails"."productId"="products".id order by "cartId"',
     [userId]
   )
   return response.rows

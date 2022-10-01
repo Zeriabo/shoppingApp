@@ -96,7 +96,6 @@ const Navbar = () => {
   let history= useSelector((state:RootState)=>state.rootReducer.user.history);
 
   const signin= ()=>{
-    console.log(process.env.REACT_APP_SERVER_URL)
     window.open(process.env.REACT_APP_SERVER_URL+'/users/auth/account/',"_self")
   }
    const signout= ()=>{

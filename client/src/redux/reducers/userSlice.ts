@@ -73,6 +73,7 @@ export const getHistory: any = createAsyncThunk(
       process.env.REACT_APP_SERVER_URL + "/carts/paid/" + userId
     );
     const res = await response.json();
+    console.log(res);
     return res;
   }
 );
@@ -83,11 +84,9 @@ export const checkUserCart: any = createAsyncThunk(
   async (user: IUser) => {
     var userId = null;
     var cart: any = null;
-    console.log(user);
     const gettingUserID = axios
       .get(process.env.REACT_APP_SERVER_URL + "/users/get/" + user.email)
       .then((response: any) => {
-        console.log(response);
         if (response.data.body.result[0].email == user.email) {
           var userId = response.data.body.result[0].id;
 
