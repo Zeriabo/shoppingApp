@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 // Start Express server
 app_1.default.listen(app_1.default.get('port'), () => {
-    console.log('  App is running at http://localhost:%d in %s mode', app_1.default.get('port'), app_1.default.get('env'));
+    console.log('  App is running at port:%d in %s mode', app_1.default.get('port'), app_1.default.get('env'));
     console.log('  Press CTRL-C to stop\n');
     product_1.default.fillProducts()
         .then((result) => {

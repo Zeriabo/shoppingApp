@@ -12,21 +12,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const server_1 = require("../server");
 const axios = require('axios').default;
 const getProducts = () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."product"  ORDER BY id ASC');
+    const response = yield server_1.client.query('SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."products"  ORDER BY id ASC');
     return response.rows;
 });
 const getProductsByCategory = (category) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."product" where category=$1', [category]);
+    const response = yield server_1.client.query('SELECT id,title,price,discount,quantity ::INTEGER,category,image,description FROM public."products" where category=$1', [category]);
     return response.rows;
 });
 const getSingleProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT * FROM public."product" where id= $1', [id]);
+    const response = yield server_1.client.query('SELECT * FROM public."products" where id= $1', [id]);
     return response.rows;
 });
 const fillProducts = () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT * FROM public."product"');
+    const response = yield server_1.client.query('SELECT * FROM public."products"');
     let discount = 0.0;
-    var newlyCreatedCategoryId = null;
+    let newlyCreatedCategoryId = null;
     const res = yield response;
     if (res.rowCount == 0) {
         try {
@@ -40,7 +40,6 @@ const fillProducts = () => __awaiter(void 0, void 0, void 0, function* () {
                     else {
                         discount = 5;
                     }
-                    console.log(product.category);
                     yield server_1.client
                         .query('SELECT * FROM category WHERE name=$1', [product.category])
                         .then((qres) => __awaiter(void 0, void 0, void 0, function* () {
@@ -53,13 +52,10 @@ const fillProducts = () => __awaiter(void 0, void 0, void 0, function* () {
                                     }
                                     else {
                                         const lastinsertedID = yield server_1.client.query('SELECT LAST_INSERT_ID()');
-                                        console.log(lastinsertedID);
-                                        console.log(result);
-                                        console.log(result.rows[0].id);
                                         newlyCreatedCategoryId = result.rows[0].id;
-                                        const productExists = yield server_1.client.query('SELECT * FROM product WHERE name=$1', [product.name]);
+                                        const productExists = yield server_1.client.query('SELECT * FROM products WHERE name=$1', [product.name]);
                                         if ((productExists.rowCount = 0)) {
-                                            yield server_1.client.query('INSERT INTO  public."product"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)', [
+                                            yield server_1.client.query('INSERT INTO  public."products"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)', [
                                                 product.title,
                                                 product.price,
                                                 product.rating.rate * 10,
@@ -83,7 +79,7 @@ const fillProducts = () => __awaiter(void 0, void 0, void 0, function* () {
                         }
                         else {
                             newlyCreatedCategoryId = qres.rows[0].id;
-                            yield server_1.client.query('INSERT INTO  public."product"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)', [
+                            yield server_1.client.query('INSERT INTO  public."products"(title, price, discount, quantity,description, category, image) VALUES($1,$2,$3,$4,$5,$6,$7)', [
                                 product.title,
                                 product.price,
                                 product.rating.rate * 10,
@@ -115,7 +111,7 @@ const fillProducts = () => __awaiter(void 0, void 0, void 0, function* () {
     return response;
 });
 const createProduct = (newProduct) => {
-    server_1.client.query('INSERT INTO  public."product"(title,price,discount,quantity) VALUES($1,$2,$3,$4)', [
+    server_1.client.query('INSERT INTO  public."products"(title,price,discount,quantity) VALUES($1,$2,$3,$4)', [
         newProduct.title,
         newProduct.price,
         newProduct.discount,
@@ -130,11 +126,11 @@ const createProduct = (newProduct) => {
     });
 };
 const deleteProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('DELETE FROM public."product" where id= $1', [id]);
+    const response = yield server_1.client.query('DELETE FROM public."products" where id= $1', [id]);
     return response.rowCount > 0;
 });
 const updateProduct = (id, update) => __awaiter(void 0, void 0, void 0, function* () {
-    const toUpdate = yield server_1.client.query('SELECT * FROM public."product" where id= $1', [id]);
+    const toUpdate = yield server_1.client.query('SELECT * FROM public."products" where id= $1', [id]);
     let updated = false;
     let response = null;
     const err = {

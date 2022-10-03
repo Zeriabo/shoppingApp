@@ -25,7 +25,7 @@ const insertProductToCart = (cartId, productId, quantity, price, discount) => __
         if (results) {
             if (results.rowCount > 0) {
                 const tablename = 'public."cartDetails"';
-                const response = yield server_1.client.query("SELECT CURRVAL(pg_get_serial_sequence($1,'id'))", [tablename]);
+                const response = yield server_1.client.query('SELECT CURRVAL(pg_get_serial_sequence($1,\'id\'))', [tablename]);
                 const currValue = Number(response.rows[0].currval);
                 server_1.client.query('UPDATE public."cart" SET "cartDetailsId"=$1 WHERE id=$2', [currValue, cartId], (error, result) => {
                     if (error) {
@@ -47,13 +47,15 @@ const insertProductToCart = (cartId, productId, quantity, price, discount) => __
 });
 const addProductToCart = (cartId, productId, quantity, price, discount) => __awaiter(void 0, void 0, void 0, function* () {
     //SET quantity=$1
+    console.log('Adding ' + productId + ' ' + cartId);
     server_1.client
         .query('SELECT * FROM public."cartDetails" where "cartId"=$1 And "productId"=$2', [cartId, productId])
         .then((res) => {
         if (res.rowCount > 0) {
             server_1.client
                 .query('UPDATE public."cartDetails" SET "quantity"="quantity"+$3,"price"=$4*("quantity"+$3)-($4*("quantity"+$3)*$5/100) where "cartId"=$1 And "productId"=$2', [cartId, productId, quantity, price, discount])
-                .then((res) => (res.rowCount > 0 ? true : false));
+                .then((res) => (res.rowCount > 0 ? true : false))
+                .catch((err) => logger_1.default.error(err));
         }
         else {
             server_1.client.query('INSERT  INTO  public."cartDetails"("cartId","productId",quantity,price,discount) VALUES($1,$2,$3,$4,$5)', [
@@ -66,18 +68,6 @@ const addProductToCart = (cartId, productId, quantity, price, discount) => __awa
         }
     })
         .catch((err) => logger_1.default.error(err));
-    // client.query(
-    //   'INSERT  INTO  public."cartDetails"("cartId","productId",quantity,price,discount) VALUES($1,$2,$3,$4,$5)',
-    //   [cartId,cartDetailsId, productId, quantity],
-    //   (error: any, results: any) => {
-    //     if (error) {
-    //       //record error in the error file
-    //       logger.error(error.detail)
-    //       throw error
-    //     }
-    //     return results
-    //   }
-    // )
 });
 const removeProductFromCart = (productId, cartId) => {
     server_1.client.query('SELECT * FROM public."cartDetails"  WHERE  "productId"=$1 AND "cartId"=$2 ', [productId, cartId], (error, results) => {

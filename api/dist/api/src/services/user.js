@@ -11,20 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const server_1 = require("../server");
 const getUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT * FROM public."user" ORDER BY id ASC');
+    const response = yield server_1.client.query('SELECT * FROM public."users" ORDER BY id ASC');
     return response.rows;
 });
 const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT * FROM public."user" where id= $1', [id]);
+    const response = yield server_1.client.query('SELECT * FROM public."users" where id= $1', [id]);
     return response.rows;
 });
 const getUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT * FROM public."user" where  email=$1', [email]);
+    const response = yield server_1.client.query('SELECT * FROM public."users" where  email=$1', [email]);
     return response.rows;
 });
 const createUser = (newUser) => __awaiter(void 0, void 0, void 0, function* () {
     const [firstname, lastname] = newUser.user.name.split(' ');
-    server_1.client.query('INSERT INTO  public."user"("firstname","lastname","email","passwordhash",admin) VALUES($1,$2,$3,$4,$5)', [firstname, lastname, newUser.user.email, null, newUser.user.admin ? 1 : 0], (err, result) => {
+    server_1.client.query('INSERT INTO  public."users"("firstname","lastname","email","passwordhash",admin) VALUES($1,$2,$3,$4,$5)', [firstname, lastname, newUser.user.email, null, newUser.user.admin ? 1 : 0], (err, result) => {
         if (err) {
             console.log(err);
             return err;
@@ -35,11 +35,11 @@ const createUser = (newUser) => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('DELETE FROM public."user" where id= $1', [id]);
+    const response = yield server_1.client.query('DELETE FROM public."users" where id= $1', [id]);
     return response.rowCount > 0;
 });
 const updateUser = (id, update) => __awaiter(void 0, void 0, void 0, function* () {
-    const toUpdate = yield server_1.client.query('SELECT * FROM public."user" where id= $1', [id]);
+    const toUpdate = yield server_1.client.query('SELECT * FROM public."users" where id= $1', [id]);
     if (toUpdate.rowCount > 0) {
         let firstName = update.firstName;
         let lastName = update.lastName;
@@ -65,7 +65,7 @@ const updateUser = (id, update) => __awaiter(void 0, void 0, void 0, function* (
         if (admin == null) {
             admin = toUpdate.rows[0].admin;
         }
-        server_1.client.query('UPDATE  public."user" SET "firstname"=$1,"lastname"=$2,"mobile"=$3,"email"=$4,"passwordhash"=$5,"admin"=$6 where id= $7', [firstName, lastName, mobile, email, password, admin, id], (err, result) => {
+        server_1.client.query('UPDATE  public."users" SET "firstname"=$1,"lastname"=$2,"mobile"=$3,"email"=$4,"passwordhash"=$5,"admin"=$6 where id= $7', [firstName, lastName, mobile, email, password, admin, id], (err, result) => {
             if (err) {
                 console.log(err);
                 return err;

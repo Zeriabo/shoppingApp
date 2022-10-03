@@ -14,6 +14,7 @@ const toolkit_1 = require("@reduxjs/toolkit");
 const initialState = {
     products: [],
     filteredProducts: [],
+    likedProducts: [],
     status: "idle",
 };
 var untouch = [];
@@ -63,7 +64,6 @@ exports.productsSlice = toolkit_1.createSlice({
                 state.products.filter((element) => element.price != action.payload);
         },
         loadProducts(state, action) {
-            console.log("Load products");
             action.payload.forEach((element) => {
                 var productToPush = {
                     id: 0,
@@ -86,19 +86,37 @@ exports.productsSlice = toolkit_1.createSlice({
         },
         searchProduct(state, action) {
             if (action.payload != "") {
-                return Object.assign(Object.assign({}, state), { filteredProducts: state.products.filter((foundProduct) => foundProduct.description.includes(action.payload)) });
+                return Object.assign(Object.assign({}, state), { filteredProducts: state.products.filter((foundProduct) => foundProduct.description.includes(action.payload) ||
+                        foundProduct.title.includes(action.payload)) });
             }
             else {
                 return Object.assign(Object.assign({}, state), { products: untouch });
             }
         },
         filterProducts(state, action) {
-            console.log(action);
             if (action.payload != "") {
                 return Object.assign(Object.assign({}, state), { filteredProducts: state.products.filter((foundProduct) => foundProduct.category == action.payload) });
             }
             else {
                 return Object.assign(Object.assign({}, state), { products: untouch });
+            }
+        },
+        likeUnlikeProduct(state, action) {
+            console.log(action.payload);
+            const found = state.likedProducts.filter(function (obj) {
+                if (obj.id === action.payload.id) {
+                    return true;
+                }
+                return false;
+            });
+            console.log(found);
+            if (found.length == 0) {
+                return Object.assign(Object.assign({}, state), { likedProducts: [...state.likedProducts, action.payload] });
+            }
+            else {
+                return Object.assign(Object.assign({}, state), { likedProducts: state.likedProducts.filter((product) => {
+                        return product.id != action.payload.id;
+                    }) });
             }
         },
     },
@@ -133,6 +151,6 @@ exports.productsSlice = toolkit_1.createSlice({
 exports.selectProductDesc = (state) => state.products;
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.
-_a = exports.productsSlice.actions, exports.addProduct = _a.addProduct, exports.removeProduct = _a.removeProduct, exports.loadProducts = _a.loadProducts, exports.searchProduct = _a.searchProduct, exports.filterProducts = _a.filterProducts;
+_a = exports.productsSlice.actions, exports.addProduct = _a.addProduct, exports.removeProduct = _a.removeProduct, exports.loadProducts = _a.loadProducts, exports.searchProduct = _a.searchProduct, exports.filterProducts = _a.filterProducts, exports.likeUnlikeProduct = _a.likeUnlikeProduct;
 exports.default = exports.productsSlice.reducer;
 //# sourceMappingURL=productsSlice.js.map

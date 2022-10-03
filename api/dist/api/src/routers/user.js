@@ -46,16 +46,38 @@ router.get('/login/failed', (req, res) => {
         message: 'failure',
     });
 });
+/**
+ * @openapi
+ * /logout:
+ *  get:
+ *    summary: logout and clear the cookies
+ *     tags:
+ *     - User
+ *     description: Responds if the app is up and running
+ *     responses:
+ *       401:
+ *         description: App is up and running
+ */
 router.get('/logout', (req, res) => {
-    console.log('logout');
     req.logOut();
-    res.redirect('http://localhost:3000');
+    res.redirect('http://localhost:3050');
 });
-//check route
+/**
+ * @openapi
+ * /login/success:
+ *  get:
+ *    summary: login sucess return the user
+ *     tags:
+ *     - User
+ *     description: Responds if the app is up and running
+ *     responses:
+ *       401:
+ *         description: App is up and running
+ */
 router.get('/login/success', (req, res, next) => {
     res.cookie('user', req.user, {});
     res.status(200).json({
-        sucess: true,
+        success: true,
         message: 'Successul login',
         cookies: req.sessionStore.sessions,
         user: req.user,
@@ -63,14 +85,12 @@ router.get('/login/success', (req, res, next) => {
 });
 // Sign JSON Web Token, expires in 60 minutes
 const signToken = (res, user) => {
-    console.log('signToken');
     const payload = {
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.status.role,
     };
-    console.log(payload);
     return payload;
     // jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
     //   res.json({
@@ -92,7 +112,7 @@ const signToken = (res, user) => {
  *         description: return the User
  */
 router.get('/auth/google/callback', passport_1.default.authenticate('google', {
-    successRedirect: 'http://localhost:3000/',
+    successRedirect: 'http://localhost:3050/',
     failureRedirect: '/login/failed',
 }), (req, res) => {
     signToken(res, req.user);

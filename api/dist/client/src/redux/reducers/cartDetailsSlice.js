@@ -21,12 +21,12 @@ const initialState = {
     total: 0,
 };
 exports.fetchCartDetails = toolkit_1.createAsyncThunk("getCartDetails", (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield axios_1.default.get(process.env.SERVER_URL + "/cartdetails/" + id);
+    return yield axios_1.default.get(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + id);
 }));
 exports.addProductToCartDetails = toolkit_1.createAsyncThunk("getCartDetails", (data) => __awaiter(void 0, void 0, void 0, function* () {
     const cartId = data.cartId;
     const productId = data.id;
-    yield fetch(process.env.SERVER_URL + "/cartdetails/" + cartId, {
+    yield fetch(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + cartId, {
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -37,10 +37,8 @@ exports.addProductToCartDetails = toolkit_1.createAsyncThunk("getCartDetails", (
     });
 }));
 exports.checkOut = toolkit_1.createAsyncThunk("checkOutCart", (id) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Paying");
-    console.log(id);
     const cartId = id;
-    yield fetch(process.env.SERVER_URL + "/carts/" + cartId, {
+    yield fetch(process.env.REACT_APP_SERVER_URL + "/carts/" + cartId, {
         method: "POST",
         headers: {
             Accept: "application/json",
@@ -50,7 +48,9 @@ exports.checkOut = toolkit_1.createAsyncThunk("checkOutCart", (id) => __awaiter(
     });
 }));
 exports.getCartDetails = (id) => {
-    axios_1.default.get(process.env.SERVER_URL + "/cartdetails/" + id).then((res) => {
+    axios_1.default
+        .get(process.env.REACT_APP_SERVER_URL + "/cartdetails/" + id)
+        .then((res) => {
         //cartid
         return res.data;
     });
@@ -58,7 +58,7 @@ exports.getCartDetails = (id) => {
 exports.removeProductFromCartDetails = toolkit_1.createAsyncThunk("getCartDetails", (data) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(data);
     const id = data.id; //productId
-    fetch(process.env.SERVER_URL + "/cartdetails/remove/" + data.cartId, {
+    fetch(process.env.REACT_APP_SERVER_URL + "/cartdetails/remove/" + data.cartId, {
         method: "POST",
         headers: {
             Accept: "application/json",

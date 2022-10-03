@@ -19,9 +19,6 @@ const apiError_1 = require("../helpers/apiError");
 // POST /carts
 exports.addProductToCart = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log('adding');
-        console.log(req.body);
-        console.log(Number(req.params.cartId));
         const data = req.body;
         const cartId = Number(req.params.cartId);
         const productId = Number(data.productId);
@@ -49,11 +46,12 @@ exports.addProductToCart = (req, res, next) => __awaiter(void 0, void 0, void 0,
             });
         }
         else {
-            yield cartDetails_1.default.addProductToCart(cartId, productId, quantity, price, discount)
+            return yield cartDetails_1.default.addProductToCart(cartId, productId, quantity, price, discount)
                 .then((res) => {
                 return res;
             })
                 .catch((err) => {
+                console.log(err);
                 next(err);
             });
         }

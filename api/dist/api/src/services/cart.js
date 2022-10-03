@@ -15,7 +15,7 @@ const getCarts = () => __awaiter(void 0, void 0, void 0, function* () {
     return response.rows;
 });
 const getPaidCarts = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield server_1.client.query('SELECT "cart".id as cartId,"product"."title","cartDetails"."price","cartDetails"."created_at" FROM public."cart",public."cartDetails",public."product" WHERE "userId"=$1  AND "cart".id="cartId" AND "paid"=true And "cartDetails"."productId"="product".id order by "cartId"', [userId]);
+    const response = yield server_1.client.query('SELECT "cart".id as cartId,"products"."title","cartDetails"."price",CAST("cartDetails"."created" AS VARCHAR) FROM public."cart",public."cartDetails",public."products" WHERE "userId"=$1  AND "cart".id="cartId" AND "paid"=true And "cartDetails"."productId"="products".id order by "cartId"', [userId]);
     return response.rows;
 });
 const getSingleCart = (id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -52,7 +52,7 @@ const getSingleCartByUserId = (id) => __awaiter(void 0, void 0, void 0, function
 });
 const getUserCart = (email) => __awaiter(void 0, void 0, void 0, function* () {
     return yield server_1.client
-        .query('SELECT id FROM public."user" where email= $1', [email])
+        .query('SELECT id FROM public."users" where email= $1', [email])
         .then((result) => {
         if (result.rows == 0) {
             return 'no user with this email';
@@ -152,7 +152,7 @@ const payCart = (id) => __awaiter(void 0, void 0, void 0, function* () {
         .query('SELECT * FROM public."cart" where id= $1', [id])
         .then((selectRes) => {
         if (selectRes.rows.length > 0) {
-            let paid = true;
+            const paid = true;
             server_1.client
                 .query('UPDATE  public."cart" SET paid=$1 where id= $2', [paid, id])
                 .then((res) => {

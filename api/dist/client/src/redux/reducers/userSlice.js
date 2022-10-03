@@ -15,8 +15,6 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const toolkit_1 = require("@reduxjs/toolkit");
 const axios_1 = __importDefault(require("axios"));
-const hooks_1 = require("../app/hooks");
-const dispatch = hooks_1.useAppDispatch;
 const initialState = {
     user: {
         id: undefined,
@@ -25,8 +23,8 @@ const initialState = {
         image: undefined,
     },
     loading: "idle",
-    cart: null,
-    history: null,
+    cart: {},
+    history: {},
 };
 exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(void 0, void 0, void 0, function* () {
     const userObj = {
@@ -35,7 +33,7 @@ exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(
         email: undefined,
         image: undefined,
     };
-    const response = yield fetch(process.env.SERVER_URL + "/users/login/success", {
+    const response = yield fetch(process.env.REACT_APP_SERVER_URL + "/users/login/success", {
         method: "GET",
         headers: {
             Accept: "application/json",
@@ -58,7 +56,7 @@ exports.fetchUser = toolkit_1.createAsyncThunk("users/getUser", () => __awaiter(
     return userObj;
 }));
 exports.getHistory = toolkit_1.createAsyncThunk("users/getHistory", (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch(process.env.SERVER_URL + "/carts/paid/" + userId);
+    const response = yield fetch(process.env.REACT_APP_SERVER_URL + "/carts/paid/" + userId);
     const res = yield response.json();
     console.log(res);
     return res;
@@ -68,7 +66,7 @@ exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user)
     var userId = null;
     var cart = null;
     const gettingUserID = axios_1.default
-        .get(process.env.SERVER_URL + "/users/get/" + user.email)
+        .get(process.env.REACT_APP_SERVER_URL + "/users/get/" + user.email)
         .then((response) => {
         if (response.data.body.result[0].email == user.email) {
             var userId = response.data.body.result[0].id;
@@ -76,32 +74,34 @@ exports.checkUserCart = toolkit_1.createAsyncThunk("users/checkUserCart", (user)
         }
         else {
             //user is not in user table and doesn't have a cart
-            axios_1.default.post(process.env.SERVER_URL + "/users/", {
+            axios_1.default
+                .post(process.env.REACT_APP_SERVER_URL + "/users/", {
                 body: user,
-            });
+            })
+                .then((res) => console.log(res));
         }
     })
         .catch((err) => console.log(err));
     userId = yield gettingUserID;
     if (userId > 0) {
-        const cartApi = yield axios_1.default.get(process.env.SERVER_URL + "/carts/user/" + userId);
+        const cartApi = yield axios_1.default.get(process.env.REACT_APP_SERVER_URL + "/carts/user/" + userId);
         if (cartApi.data[0] != undefined) {
             return cartApi.data[0];
         }
         else {
             axios_1.default
-                .post(process.env.SERVER_URL + "/users/", {
+                .post(process.env.REACT_APP_SERVER_URL + "/users/", {
                 user,
             })
                 .then((res) => res)
                 .catch((err) => console.log(err));
             axios_1.default
-                .post(process.env.SERVER_URL + "/carts/", {
+                .post(process.env.REACT_APP_SERVER_URL + "/carts/", {
                 userId: user.id,
             })
                 .then((res) => res)
                 .catch((err) => console.log(err));
-            const cartApi = yield axios_1.default.get(process.env.SERVER_URL + "/carts/user/", { params: { userId: userId } });
+            const cartApi = yield axios_1.default.get(process.env.REACT_APP_SERVER_URL + "/carts/user/", { params: { userId: userId } });
             return cartApi.data[0];
         }
     }
@@ -157,7 +157,6 @@ exports.userSlice = toolkit_1.createSlice({
                 state.cart = null;
             }),
             builder.addCase(exports.getHistory.fulfilled, (state, action) => {
-                console.log(action);
                 state.history = action.payload;
             }),
             builder.addCase(exports.getHistory.rejected, (state, action) => {

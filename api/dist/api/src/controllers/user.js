@@ -18,7 +18,6 @@ const logger_1 = __importDefault(require("../util/logger"));
 exports.createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const create = req.body;
-        console.log(create);
         const createdUser = yield user_1.default.createUser(create);
         if (createdUser) {
             if (createdUser.rowCount > 0) {

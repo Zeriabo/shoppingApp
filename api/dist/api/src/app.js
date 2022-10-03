@@ -68,11 +68,11 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
 });
-app.use('/v1/carts', cart_1.default);
-app.use('/v1/category', category_1.default);
-app.use('/v1/products', product_1.default);
-app.use('/v1/users', user_1.default);
-app.use('/v1/cartdetails', cartDetail_1.default);
+app.use('/api/v1/carts', cart_1.default);
+app.use('/api/v1/category', category_1.default);
+app.use('/api/v1/products', product_1.default);
+app.use('/api/v1/users', user_1.default);
+app.use('/api/v1/cartdetails', cartDetail_1.default);
 // Custom API error handler
 app.use(apiErrorHandler_1.default);
 // Couple the application to the Swagger module.

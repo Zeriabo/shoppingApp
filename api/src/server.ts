@@ -1,16 +1,8 @@
 import app from './app'
 import errorHandler from 'errorhandler'
 import { Client } from 'pg'
-import {
-  DB_USER,
-  DB_HOST,
-  DB,
-  DB_PASSWORD,
-  ENVIRONMENT,
-  DEV_DB_URL,
-} from './util/secrets'
+import { DB_USER, DB_HOST, DB, DB_PASSWORD, ENVIRONMENT } from './util/secrets'
 import logger from './util/logger'
-import axios from 'axios'
 import ProductService from './services/product'
 
 export const client = new Client({
@@ -37,7 +29,7 @@ if (process.env.NODE_ENV === 'development') {
 // Start Express server
 app.listen(app.get('port'), () => {
   console.log(
-    '  App is running at http://localhost:%d in %s mode',
+    '  App is running at port:%d in %s mode',
     app.get('port'),
     app.get('env')
   )
