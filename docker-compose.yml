@@ -5,9 +5,7 @@ services:
       - api
       - client
     restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./nginx
+    image: shoppingapp-nginx-1
     ports:
       - "3050:80"
 
