@@ -54,9 +54,9 @@ const fillProducts = async () => {
                         //handle error
                         console.log(err)
                       } else {
-                        const lastinsertedID = await client.query(
-                          'SELECT LAST_INSERT_ID()'
-                        )
+                        // const lastinsertedID = await client.query(
+                        //   'SELECT LAST_INSERT_ID()'
+                        // )
 
                         newlyCreatedCategoryId = result.rows[0].id
                         const productExists = await client.query(

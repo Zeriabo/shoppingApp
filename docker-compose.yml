@@ -5,7 +5,7 @@ services:
       - api
       - client
     restart: always
-    image: shoppingapp-nginx-1
+    image: nginx
     ports:
       - "3050:80"
 
